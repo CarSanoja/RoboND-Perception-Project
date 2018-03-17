@@ -48,13 +48,18 @@ def send_to_yaml(yaml_filename, dict_list):
     with open(yaml_filename, 'w') as outfile:
         yaml.dump(data_dict, outfile, default_flow_style=False)
 
-#def statistical_outlier_filter(cloud_data, mean=50, deviation=1.0):
-#	outlier_filter = cloud_data.make_statistical_outlier_filter()
-#	outlier_filter.set_mean_k(mean)
-#	outlier_filter.set_std_dev_mul_thresh(deviation)
-#	cloud_filtered = outlier_filter.filter()
-#	return cloud_filtered
+def statistical_outlier_filter(cloud_data, mean=50, deviation=1.0):
+	outlier_filter = cloud_data.make_statistical_outlier_filter()
+	outlier_filter.set_mean_k(mean)
+	outlier_filter.set_std_dev_mul_thresh(deviation)
+	cloud_filtered = outlier_filter.filter()
+	return cloud_filtered
 
+# The VoxelGrid class that we’re about to present creates a 3D voxel grid (think about a 
+# voxel grid as a set of tiny 3D boxes in space) over the input point cloud data. Then, in 
+# each voxel (i.e., 3D box), all the points present will be approximated (i.e., downsampled) 
+# with their centroid. This approach is a bit slower than approximating them with the center 
+# of the voxel, but it represents the underlying surface more accurately.
 def voxel_grid_downsampling(cloud_data,LEAF_SIZE = 0.01):
     vox = cloud_data.make_voxel_grid_filter()
     # Set the voxel (or leaf) size
