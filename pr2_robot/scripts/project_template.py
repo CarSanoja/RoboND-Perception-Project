@@ -122,7 +122,15 @@ def pcl_callback(pcl_msg):
 # Exercise-2 TODOs:
     # TODO: Convert ROS msg to PCL data
     pcl_data = ros_to_pcl(pcl_msg)    
-
+	cloud_filtered = voxel_grid_downsampling(pcl_data)
+    #Passthrough filter implementation
+    cloud_filtered=Passthrough_filter(cloud_filtered)
+    cloud_filtered=Passthrough_filter(cloud_filtered,axis_min = 0.42,axis_max = 1.55,filter_axis = 'x')
+    # TODO: RANSAC Plane Segmentation
+    cloud_table,cloud_objects=RANSAC(cloud_filtered,max_distance = 0.01)
+    # TODO: Euclidean Clustering
+    white_cloud, cluster_indices, cluster_cloud = Euclidean_clustering(cloud_objects)
+    
 # Exercise-3 TODOs:
     
 
