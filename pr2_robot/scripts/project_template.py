@@ -120,7 +120,8 @@ def Euclidean_clustering(cloud_objects,cluster_tolerance=0.02, min_cluster_size=
 # Callback function for your Point Cloud Subscriber
 def pcl_callback(pcl_msg):
 # Exercise-2 TODOs:
-    
+    # TODO: Convert ROS msg to PCL data
+    pcl_data = ros_to_pcl(pcl_msg)    
 
 # Exercise-3 TODOs:
     
