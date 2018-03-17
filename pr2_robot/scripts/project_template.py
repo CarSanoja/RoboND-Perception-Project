@@ -145,6 +145,8 @@ def pcl_callback(pcl_msg):
     for index, pts_list in enumerate(cluster_indices):
     	# Grab the points for the cluster from the extracted outliers (cloud_objects)
         pcl_cluster = cloud_objects.extract(pts_list)
+        # TODO: convert the cluster from pcl to ROS using helper function
+        pcl_cluster_msg = pcl_to_ros(pcl_cluster)
 
     try:
         pr2_mover(detected_objects)
