@@ -134,6 +134,10 @@ def pcl_callback(pcl_msg):
     pcl_msg_table = pcl_to_ros(cloud_table)
     pcl_msg_object = pcl_to_ros(cloud_objects)
     ros_cluster_cloud = pcl_to_ros(cluster_cloud)
+    # TODO: Publish ROS messages
+    pcl_objects_pub.publish(pcl_msg_object)
+    pcl_table_pub.publish(pcl_msg_table)
+    pcl_cluster_pub.publish(ros_cluster_cloud)
 # Exercise-3 TODOs:
     
 
