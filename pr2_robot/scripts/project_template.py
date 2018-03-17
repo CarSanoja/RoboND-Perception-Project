@@ -213,8 +213,21 @@ class PickObject:
 
 # function to load parameters and request PickPlace service
 def pr2_mover(object_list):
-  	
-
+  	test_scene = Int32()
+  	test_scene.data = 2
+  	file = []
+  	# Get information from the YAML files
+  	pick_list = rospy.get_param('/object_list')
+  	dropbox_list = rospy.get_param('/dropbox')
+	for Object in object_list:
+		pickObject = PickObject(Object)
+		pickObject.place(pick_list, dropbox_list)
+		pickObject.Make_yaml_dict(test_scene)
+		file.append(pickObject.yaml_dictonary)
+		#print(pickObject.yaml_dictonary)
+		rospy.wait_for_service('pick_place_routine')
+	rospy.wait_for_service('pick_place_routine')
+	send_to_yaml("output_model_" + str(2) + '.yaml', file)
 
 if __name__ == '__main__':
 	# TODO: ROS node initialization
