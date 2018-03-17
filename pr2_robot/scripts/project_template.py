@@ -130,7 +130,10 @@ def pcl_callback(pcl_msg):
     cloud_table,cloud_objects=RANSAC(cloud_filtered,max_distance = 0.01)
     # TODO: Euclidean Clustering
     white_cloud, cluster_indices, cluster_cloud = Euclidean_clustering(cloud_objects)
-    
+    # TODO: Convert PCL data to ROS messages
+    pcl_msg_table = pcl_to_ros(cloud_table)
+    pcl_msg_object = pcl_to_ros(cloud_objects)
+    ros_cluster_cloud = pcl_to_ros(cluster_cloud)
 # Exercise-3 TODOs:
     
 
