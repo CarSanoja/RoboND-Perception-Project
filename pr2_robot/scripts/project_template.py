@@ -178,7 +178,21 @@ def pcl_callback(pcl_msg):
     except rospy.ROSInterruptException:
         pass
 
+class PickObject:
 
+  	def __init__(self, object):
+	    self.name = String()
+	    self.arm = String()
+	    self.pick_pose = Pose()
+	    self.place_pose =  Pose()
+	    self.name.data = str(object.label)
+	    self.group = None 
+	    self.yaml_dictonary = None
+	    points = ros_to_pcl(object.cloud).to_array()
+	    x, y, z = np.mean(points, axis = 0)[:3]
+	    self.pick_pose.position.x = np.asscalar(x) 
+	    self.pick_pose.position.y = np.asscalar(y)
+	    self.pick_pose.position.z = np.asscalar(z)
 
 
 # function to load parameters and request PickPlace service
