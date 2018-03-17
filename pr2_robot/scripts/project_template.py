@@ -72,6 +72,19 @@ def Passthrough_filter(cloud_data,axis_min = 0.6,axis_max = 1.1,filter_axis = 'z
     cloud_filtered = passthrough.filter()
     return cloud_filtered
 
+def RANSAC(cloud_data,max_distance = 0.01):
+    seg = cloud_data.make_segmenter()
+    # Set the model you wish to fit 
+    seg.set_model_type(pcl.SACMODEL_PLANE)
+    seg.set_method_type(pcl.SAC_RANSAC)
+    # Max distance for a point to be considered fitting the model
+    seg.set_distance_threshold(max_distance)
+    # Call the segment function to obtain set of inlier indices and model coefficients
+    inliers, coefficients = seg.segment()
+    cloud_table = cloud_data.extract(inliers, negative=False)
+    cloud_objects = cloud_data.extract(inliers, negative=True)
+    return cloud_table,cloud_objects
+
 # Callback function for your Point Cloud Subscriber
 def pcl_callback(pcl_msg):
 # Exercise-2 TODOs:
