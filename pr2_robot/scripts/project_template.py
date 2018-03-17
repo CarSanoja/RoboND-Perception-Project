@@ -54,6 +54,13 @@ def send_to_yaml(yaml_filename, dict_list):
 #	cloud_filtered = outlier_filter.filter()
 #	return cloud_filtered
 
+def voxel_grid_downsampling(cloud_data,LEAF_SIZE = 0.01):
+    vox = cloud_data.make_voxel_grid_filter()
+    # Set the voxel (or leaf) size
+    vox.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
+    # Call the filter function to obtain the resultant downsampled point cloud
+    cloud_filtered = vox.filter()
+    return cloud_filtered
 
 # Callback function for your Point Cloud Subscriber
 def pcl_callback(pcl_msg):
