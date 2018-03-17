@@ -147,6 +147,11 @@ def pcl_callback(pcl_msg):
         pcl_cluster = cloud_objects.extract(pts_list)
         # TODO: convert the cluster from pcl to ROS using helper function
         pcl_cluster_msg = pcl_to_ros(pcl_cluster)
+        # Compute the associated feature vector
+        color_hist = compute_color_histograms(pcl_cluster_msg, using_hsv=True)
+        normals = get_normals(pcl_cluster_msg)
+        normal_hist = compute_normal_histograms(normals)
+        feature_vector = np.concatenate((color_hist, normal_hist))
 
     try:
         pr2_mover(detected_objects)
