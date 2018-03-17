@@ -193,7 +193,7 @@ class PickObject:
 	    self.pick_pose.position.x = np.asscalar(x) 
 	    self.pick_pose.position.y = np.asscalar(y)
 	    self.pick_pose.position.z = np.asscalar(z)
-	    
+
 	def place(self, pick_list, dropbox_list):
   		for obj in pick_list:
 			if obj['name'] == self.name.data:
@@ -207,6 +207,9 @@ class PickObject:
 		        self.place_pose.position.y = np.float(y)
 		        self.place_pose.position.z = np.float(z)        
 		        break
+	def Make_yaml_dict(self, scene):
+	    self.yaml_dictonary = make_yaml_dict(scene, self.arm, self.name, self.pick_pose, self.place_pose)
+	  
 
 # function to load parameters and request PickPlace service
 def pr2_mover(object_list):
