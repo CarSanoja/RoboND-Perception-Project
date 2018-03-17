@@ -85,6 +85,38 @@ def RANSAC(cloud_data,max_distance = 0.01):
     cloud_objects = cloud_data.extract(inliers, negative=True)
     return cloud_table,cloud_objects
 
+def Euclidean_clustering(cloud_objects,cluster_tolerance=0.02, min_cluster_size=30, max_cluster_size=40000):
+    # Apply function to convert XYZRGB to XYZ
+    white_cloud = XYZRGB_to_XYZ(cloud_objects)
+    tree = white_cloud.make_kdtree()
+    # Create a cluster extraction object
+    ec = white_cloud.make_EuclideanClusterExtraction()
+    # Set tolerances for distance threshold 
+    # as well as minimum and maximum cluster size (in points)
+    # NOTE: These are poor choices of clustering parameters
+    # Your task is to experiment and find values that work for segmenting objects.
+    ec.set_ClusterTolerance(cluster_tolerance)
+    ec.set_MinClusterSize(min_cluster_size)
+    ec.set_MaxClusterSize(max_cluster_size)
+    # Search the k-d tree for clusters
+    ec.set_SearchMethod(tree)
+    # Extract indices for each of the discovered clusters
+    cluster_indices = ec.Extract()
+    cluster_color = get_color_list(len(cluster_indices))
+    color_cluster_point_list = []
+
+    for j, indices in enumerate(cluster_indices):
+        for i, indice in enumerate(indices):
+            color_cluster_point_list.append([white_cloud[indice][0],
+                                            white_cloud[indice][1],
+                                            white_cloud[indice][2],
+                                             rgb_to_float(cluster_color[j])])
+
+    #Create new cloud containing all clusters, each with unique color
+    cluster_cloud = pcl.PointCloud_PointXYZRGB()
+    cluster_cloud.from_list(color_cluster_point_list)
+    return white_cloud, cluster_indices, cluster_cloud
+
 # Callback function for your Point Cloud Subscriber
 def pcl_callback(pcl_msg):
 # Exercise-2 TODOs:
