@@ -67,6 +67,7 @@ def voxel_grid_downsampling(cloud_data,LEAF_SIZE = 0.01):
     # Call the filter function to obtain the resultant downsampled point cloud
     cloud_filtered = vox.filter()
     return cloud_filtered
+    
 # The passthrough filter cut off values that are either inside or outside a given user range
 # Here, i defined a function capable of choose the axis and the range for the filter
 def Passthrough_filter(cloud_data,axis_min = 0.6,axis_max = 1.1,filter_axis = 'z'):
@@ -79,6 +80,21 @@ def Passthrough_filter(cloud_data,axis_min = 0.6,axis_max = 1.1,filter_axis = 'z
     cloud_filtered = passthrough.filter()
     return cloud_filtered
 
+# The RANSAC algorithm assumes that all of the data we are looking at is comprised of both 
+# inliers and outliers. Inliers can be explained by a model with a particular set of parameter 
+# values, while outliers do not fit that model in any circumstance.
+# The input to the RANSAC algorithm is a set of observed data values, a parameterized model which 
+# can explain or be fitted to the observations, and some confidence parameters.
+# RANSAC achieves its goal by iteratively selecting a random subset of the original data. These data 
+# are hypothetical inliers and this hypothesis is then tested as follows:
+# 	1.) A model is fitted to the hypothetical inliers, i.e. all free parameters of the model are 
+# reconstructed from the inliers.
+# 	2.) All other data are then tested against the fitted model and, if a point fits well to the estimated 
+# model, also considered as a hypothetical inlier.
+# 	3.) The estimated model is reasonably good if sufficiently many points have been classified as hypothetical inliers.
+# 	4.) The model is reestimated from all hypothetical inliers, because it has only been estimated from 
+# the initial set of hypothetical inliers.
+# 	5.)Finally, the model is evaluated by estimating the error of the inliers relative to the model.
 def RANSAC(cloud_data,max_distance = 0.01):
     seg = cloud_data.make_segmenter()
     # Set the model you wish to fit 
