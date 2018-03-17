@@ -62,6 +62,16 @@ def voxel_grid_downsampling(cloud_data,LEAF_SIZE = 0.01):
     cloud_filtered = vox.filter()
     return cloud_filtered
 
+def Passthrough_filter(cloud_data,axis_min = 0.6,axis_max = 1.1,filter_axis = 'z'):
+    # Create a PassThrough filter object.
+    passthrough = cloud_data.make_passthrough_filter()
+    # Assign axis and range to the passthrough filter object.
+    passthrough.set_filter_field_name(filter_axis)
+    passthrough.set_filter_limits(axis_min, axis_max)
+    # Finally use the filter function to obtain the resultant point cloud. 
+    cloud_filtered = passthrough.filter()
+    return cloud_filtered
+
 # Callback function for your Point Cloud Subscriber
 def pcl_callback(pcl_msg):
 # Exercise-2 TODOs:
