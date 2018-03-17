@@ -152,6 +152,11 @@ def pcl_callback(pcl_msg):
         normals = get_normals(pcl_cluster_msg)
         normal_hist = compute_normal_histograms(normals)
         feature_vector = np.concatenate((color_hist, normal_hist))
+        # Make the prediction, retrieve the label for the result
+        # and add it to detected_objects_labels list
+        prediction = clf.predict(scaler.transform(feature_vector.reshape(1,-1)))
+        label = encoder.inverse_transform(prediction)[0]
+        detected_objects_labels.append(label)
 
     try:
         pr2_mover(detected_objects)
