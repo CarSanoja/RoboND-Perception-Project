@@ -59,7 +59,7 @@ def statistical_outlier_filter(cloud_data, mean=50, deviation=1.0):
 # voxel grid as a set of tiny 3D boxes in space) over the input point cloud data. Then, in 
 # each voxel (i.e., 3D box), all the points present will be approximated (i.e., downsampled) 
 # with their centroid. This approach is a bit slower than approximating them with the center 
-# of the voxel, but it represents the underlying surface more accurately.
+# of the voxel, but it represents the underlying surface more accurately. 
 def voxel_grid_downsampling(cloud_data,LEAF_SIZE = 0.01):
     vox = cloud_data.make_voxel_grid_filter()
     # Set the voxel (or leaf) size
@@ -67,7 +67,8 @@ def voxel_grid_downsampling(cloud_data,LEAF_SIZE = 0.01):
     # Call the filter function to obtain the resultant downsampled point cloud
     cloud_filtered = vox.filter()
     return cloud_filtered
-
+# The passthrough filter cut off values that are either inside or outside a given user range
+# Here, i defined a function capable of choose the axis and the range for the filter
 def Passthrough_filter(cloud_data,axis_min = 0.6,axis_max = 1.1,filter_axis = 'z'):
     # Create a PassThrough filter object.
     passthrough = cloud_data.make_passthrough_filter()
