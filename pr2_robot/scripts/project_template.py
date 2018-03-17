@@ -67,7 +67,7 @@ def voxel_grid_downsampling(cloud_data,LEAF_SIZE = 0.01):
     # Call the filter function to obtain the resultant downsampled point cloud
     cloud_filtered = vox.filter()
     return cloud_filtered
-    
+
 # The passthrough filter cut off values that are either inside or outside a given user range
 # Here, i defined a function capable of choose the axis and the range for the filter
 def Passthrough_filter(cloud_data,axis_min = 0.6,axis_max = 1.1,filter_axis = 'z'):
@@ -108,6 +108,15 @@ def RANSAC(cloud_data,max_distance = 0.01):
     cloud_objects = cloud_data.extract(inliers, negative=True)
     return cloud_table,cloud_objects
 
+# Here we are creating a EuclideanClusterExtraction with point type PointXYZ since our point cloud is of type PointXYZ.
+# We are also setting the parameters and variables for the extraction. Be careful setting the right value for setClusterTolerance(). 
+# If you take a very small value, it can happen that an actual object can be seen as multiple clusters. On the other hand, if you set 
+# the value too high, it could happen, that multiple objects are seen as one cluster. So our recommendation is to just test and try 
+# out which value suits your dataset.
+# We impose that the clusters found must have at least setMinClusterSize() points and maximum setMaxClusterSize() points.
+# Now we extracted the clusters out of our point cloud and saved the indices in cluster_indices. To separate each cluster out of the 
+# vector<PointIndices> we have to iterate through cluster_indices, create a new PointCloud for each entry and write all points of 
+# the current cluster in the PointCloud. http://www.pointclouds.org/documentation/tutorials/cluster_extraction.php
 def Euclidean_clustering(cloud_objects,cluster_tolerance=0.02, min_cluster_size=30, max_cluster_size=40000):
     # Apply function to convert XYZRGB to XYZ
     white_cloud = XYZRGB_to_XYZ(cloud_objects)
