@@ -161,6 +161,14 @@ def pcl_callback(pcl_msg):
         label_pos = list(white_cloud[pts_list[0]])
         label_pos[2] += .4
         object_markers_pub.publish(make_label(label,label_pos, index))
+        # Add the detected object to the list of detected objects.
+        do = DetectedObject()
+        do.label = label
+        do.cloud = pcl_cluster_msg
+        detected_objects.append(do)
+
+    rospy.loginfo('Detected {} objects: {}'.format(len(detected_objects_labels), detected_objects_labels))
+
 
 
     try:
