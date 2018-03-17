@@ -24,6 +24,7 @@ from pr2_robot.srv import *
 from rospy_message_converter import message_converter
 import yaml
 
+MODEL_PATH = '/home/robond/catkin_ws/model.sav'
 
 # Helper function to get surface normals
 def get_normals(cloud):
