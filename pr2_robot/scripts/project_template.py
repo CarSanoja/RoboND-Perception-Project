@@ -157,6 +157,11 @@ def pcl_callback(pcl_msg):
         prediction = clf.predict(scaler.transform(feature_vector.reshape(1,-1)))
         label = encoder.inverse_transform(prediction)[0]
         detected_objects_labels.append(label)
+        # Publish a label into RViz
+        label_pos = list(white_cloud[pts_list[0]])
+        label_pos[2] += .4
+        object_markers_pub.publish(make_label(label,label_pos, index))
+
 
     try:
         pr2_mover(detected_objects)
