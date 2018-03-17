@@ -193,7 +193,20 @@ class PickObject:
 	    self.pick_pose.position.x = np.asscalar(x) 
 	    self.pick_pose.position.y = np.asscalar(y)
 	    self.pick_pose.position.z = np.asscalar(z)
-
+	    
+	def place(self, pick_list, dropbox_list):
+  		for obj in pick_list:
+			if obj['name'] == self.name.data:
+				self.group = obj['group']
+		        break
+  		for box in dropbox_list:
+		    if box['group'] == self.group:
+		      	self.arm.data = box['name']
+		        x, y, z = box['position']
+		        self.place_pose.position.x = np.float(x) 
+		        self.place_pose.position.y = np.float(y)
+		        self.place_pose.position.z = np.float(z)        
+		        break
 
 # function to load parameters and request PickPlace service
 def pr2_mover(object_list):
