@@ -210,6 +210,15 @@ def pcl_callback(pcl_msg):
     except rospy.ROSInterruptException:
         pass
 
+# The object class will allow us to create an object (already segmentared) and save 
+# the characteristic for each one of them. 
+
+# The Object: the object we suppose to detect and grasp
+# Object Name (Obtained from the pick list): The label name predicted for the object
+# Arm Name (Based on the group of an object): the arm who is suppose to pick the object
+# Group: where the object is supposed to be delivered
+# Pick Pose (Centroid of the recognized object):  where the centroid of the object is
+# Place pose: where the destinity box is 
 class PickObject:
 
   	def __init__(self, object):
@@ -221,11 +230,13 @@ class PickObject:
 	    self.group = None 
 	    self.yaml_dictonary = None
 	    points = ros_to_pcl(object.cloud).to_array()
+# To calculated the centroid we will take the mean of the points
 	    x, y, z = np.mean(points, axis = 0)[:3]
 	    self.pick_pose.position.x = np.asscalar(x) 
 	    self.pick_pose.position.y = np.asscalar(y)
 	    self.pick_pose.position.z = np.asscalar(z)
-
+# The setter function. It receives the pick list and find the group where it belong and
+# the place position where it will be delivered.
 	def place(self, pick_list, dropbox_list):
   		for obj in pick_list:
 			if obj['name'] == self.name.data:
@@ -239,6 +250,8 @@ class PickObject:
 		        self.place_pose.position.y = np.float(y)
 		        self.place_pose.position.z = np.float(z)        
 		        break
+# This function just allow to call the helper function to create an dictionary with all the features
+# of every object
 	def Make_yaml_dict(self, scene):
 	    self.yaml_dictonary = make_yaml_dict(scene, self.arm, self.name, self.pick_pose, self.place_pose)
 	  
