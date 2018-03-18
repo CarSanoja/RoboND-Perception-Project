@@ -264,6 +264,7 @@ def pr2_mover(object_list):
   	# Get information from the YAML files
   	pick_list = rospy.get_param('/object_list')
   	dropbox_list = rospy.get_param('/dropbox')
+	# To obtain the information of each object we just need to iterate over the list
 	for Object in object_list:
 		pickObject = PickObject(Object)
 		pickObject.place(pick_list, dropbox_list)
@@ -272,6 +273,7 @@ def pr2_mover(object_list):
 		#print(pickObject.yaml_dictonary)
 		rospy.wait_for_service('pick_place_routine')
 	rospy.wait_for_service('pick_place_routine')
+	# Create the file 
 	send_to_yaml("output_model_" + str(2) + '.yaml', file)
 
 if __name__ == '__main__':
